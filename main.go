@@ -15,7 +15,7 @@ import (
 // input flags
 var (
 	InputSearch = flag.Bool("s", false, "perform search with tags")
-	InputCmd = flag.String("c", "", "command to store")
+	InputCmd = flag.String("c", "", "text to store")
 	InputTags = flag.String("t", "", "tags to store separated by ','")
 )
 
