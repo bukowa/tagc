@@ -29,3 +29,4 @@ $ tagc -s -t 2,3
 
 #### todo
 - include git based backup with new flag
+- add info to each command
