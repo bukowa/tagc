@@ -1,5 +1,5 @@
 # tagc
- tag your cli commands for future search
+tag any text for future search
 
 ### Help
 ```bash
