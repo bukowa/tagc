@@ -30,3 +30,4 @@ $ tagc -s -t 2,3
 #### todo
 - include git based backup with new flag
 - add info to each command
+- make command execute automatically with extra flags, possibly matching result x[i]
