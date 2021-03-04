@@ -6,11 +6,9 @@ tag any text for future search
 $ tagc --help
 
 Usage of tagc:
--c string
-command to store
--s    perform search with tags
--t string
-tags to store separated by ','
+-c string text to store
+-s bool perform search with tags
+-t string tags to store separated by ','
 ```
 
 ### Examples
