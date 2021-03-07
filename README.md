@@ -6,9 +6,10 @@ tag any text for future search
 $ tagc --help
 
 Usage of tagc:
--c string text to store
--s bool perform search with tags
--t string tags to store separated by ','
+  -c string text to store
+  -i string info about command
+  -s bool perform search with tags
+  -t string tags to store separated by ','
 ```
 
 ### Examples
@@ -31,3 +32,4 @@ $ tagc -s -t 2,3
 - `[✓]` add info to each command
 - `[]` include git based backup with new flag
 - `[]` make command execute automatically with extra flags, possibly matching result x[i]
+- `[]` look at gojsonq
