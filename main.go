@@ -18,6 +18,7 @@ var (
 	InputSearch = flag.Bool("s", false, "perform search with tags")
 	InputCmd = flag.String("c", "", "text to store")
 	InputTags = flag.String("t", "", "tags to store separated by ','")
+	InputInfo = flag.String("i", "", "info about command")
 )
 
 // file paths
@@ -35,6 +36,7 @@ type Data struct{
 type Command struct {
 	Command string `json:"command"`
 	Tags []string `json:"tags,omitempty"`
+	Info string `json:"info,omitempty"`
 }
 
 // output
@@ -89,17 +91,18 @@ func main() {
 		log.Fatal("command cannot be empty")
 	}
 
-	if err = store(f, &data, *InputCmd, *InputTags); err != nil {
+	if err = store(f, &data, *InputCmd, *InputTags, *InputInfo); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func store(f *os.File, data *Data, cmd, tags string) error {
+func store(f *os.File, data *Data, cmd, tags, info string) error {
 	t := strings.Split(tags, ",")
 
 	newCmd := &Command{
 		Command: cmd,
 		Tags:    t,
+		Info: info,
 	}
 
 	if len(data.Commands) == 0 {
