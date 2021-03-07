@@ -186,7 +186,7 @@ func search(data *Data, tags string) (Results, error) {
 	}
 
 	sort.Ints(nN)
-	sort.Sort(sort.Reverse(sort.IntSlice(nN)))
+	//sort.Sort(sort.Reverse(sort.IntSlice(nN)))
 
 	var output = make([]map[int][]*Command, len(nN))
 	for cmd, c := range matchSlice {
