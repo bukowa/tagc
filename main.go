@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
@@ -33,12 +34,12 @@ type Data struct{
 // stored input
 type Command struct {
 	Command string `json:"command"`
-	Tags []string `json:"tags"`
+	Tags []string `json:"tags,omitempty"`
 }
 
 // output
 type Results struct {
-	Matches map[int][]string
+	Output []map[int][]*Command
 }
 
 func main() {
@@ -152,40 +153,64 @@ func store(f *os.File, data *Data, cmd, tags string) error {
 func search(data *Data, tags string) (Results, error) {
 	var tagSlice = strings.Split(tags, ",")
 
-	var probability = make(map[*Command]int)
+	var matchSlice = map[*Command]int{}
 
 	for _, cmd := range data.Commands {
 		for _, tag := range cmd.Tags {
 			for _, searchTag := range tagSlice {
 				if strings.ToLower(tag) == strings.ToLower(searchTag) {
-					probability[cmd] += 1
+					matchSlice[cmd] += 1
 				}
 			}
 		}
 	}
 
-	var commands[]*Command
-	var number int
+	var nN []int
+	for _, i := range matchSlice {
+		nN = append(nN, i)
+	}
 
-	for cmd, i := range probability {
-		if i > number {
-			number = i
-			commands = []*Command{cmd}
-			continue
-		}
-		if i == number {
-			commands = append(commands, cmd)
-			number = i
-			continue
+	var unique = make(map[int]struct{})
+	for _, i := range nN {
+		if _, ok := unique[i]; !ok {
+			unique[i] = struct{}{}
 		}
 	}
 
-	var result = Results{Matches: make(map[int][]string)}
-
-	for cmd, i := range probability {
-		result.Matches[i] = append(result.Matches[i], cmd.Command)
+	nN = []int{}
+	for i, _ := range unique {
+		nN = append(nN, i)
 	}
 
+	sort.Ints(nN)
+	sort.Sort(sort.Reverse(sort.IntSlice(nN)))
+
+	var output = make([]map[int][]*Command, len(nN))
+	for cmd, c := range matchSlice {
+		for index, number := range nN {
+			if number == c {
+				if v, ok := output[index][number]; ok {
+					output[index][number] = append(v, cmd)
+					continue
+				}
+				output[index] = map[int][]*Command{number: {cmd}}
+				continue
+			}
+
+		}
+	}
+
+	var result = Results{
+		Output: output,
+	}
+
+	for _, v := range result.Output {
+		for _, commands := range v {
+			for _, c := range commands {
+				c.Tags = nil
+			}
+		}
+	}
 	return result, nil
 }
 
